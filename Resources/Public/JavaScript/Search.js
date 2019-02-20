@@ -47,13 +47,17 @@ IgLdapSsoAuthSearch = {
 };
 
 // IIFE for faster access to $ and safe $ use
-(function ($) {
+define(
+  ['jquery'],
+  function($) {
     $(document).ready(function () {
         IgLdapSsoAuthSearch.$ = $;
         IgLdapSsoAuthSearch.fields.form = $('#tx-igldapssoauth-searchform');
         IgLdapSsoAuthSearch.fields.basedn = $('#tx-igldapssoauth-basedn');
         IgLdapSsoAuthSearch.fields.filter = $('#tx-igldapssoauth-filter');
         IgLdapSsoAuthSearch.fields.result = $('#tx-igldapssoauth-result');
+
+        IgLdapSsoAuthSearch.actions.updateForm = IgLdapSsoAuthSearch.fields.form.data('update-form');
 
         IgLdapSsoAuthSearch.fields.form.submit(function (e) {
             e.preventDefault(); // this will prevent from submitting the form
@@ -76,4 +80,4 @@ IgLdapSsoAuthSearch = {
             IgLdapSsoAuthSearch.search();
         }
     });
-}(jQuery || TYPO3.jQuery));
+});

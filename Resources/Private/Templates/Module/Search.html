@@ -20,7 +20,8 @@
     </h1>
     <ldap:flashMessages/>
 
-    <f:form id="tx-igldapssoauth-searchform" action="searchAjax">
+    <f:form id="tx-igldapssoauth-searchform" action="searchAjax"
+            additionalAttributes="{data-update-form: '{f:uri.action(action:\'updateSearchAjax\', arguments:{configuration:currentConfiguration.uid, type:\'TYPE\'}) -> f:format.raw()}'}">
         <f:form.hidden name="configuration" value="{currentConfiguration.uid}"/>
         <table class="{classes.table}">
             <tr class="{classes.tableRow}">
@@ -86,11 +87,6 @@
     </f:form>
 
     <div id="tx-igldapssoauth-result"></div>
-
-    <script type="text/javascript">
-        // Initialize the editor
-        IgLdapSsoAuthSearch.actions.updateForm = "{f:uri.action(action:'updateSearchAjax', arguments:{configuration:currentConfiguration.uid, type:'TYPE'}) -> f:format.raw()}";
-    </script>
 </f:section>
 
 </html>
