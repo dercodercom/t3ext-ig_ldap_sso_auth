@@ -190,6 +190,12 @@ class Authentication
                 }
             }
 
+            // Make sure new users are not created disabled.
+            if (!empty($GLOBALS['TCA'][$userTable]['ctrl']['enablecolumns']['disabled'])) {
+                $enableColumn = $GLOBALS['TCA'][$userTable]['ctrl']['enablecolumns']['disabled'];
+                $typo3_user[$enableColumn] = 0;
+            }
+
             $typo3_user['username'] = Typo3UserRepository::setUsername($typo3_user['username']);
 
             $typo3_user = Typo3UserRepository::add($userTable, $typo3_user);
