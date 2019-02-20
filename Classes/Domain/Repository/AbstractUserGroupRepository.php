@@ -78,7 +78,7 @@ abstract class AbstractUserGroupRepository
                 )
             )
             ->execute()
-            ->fetchAll();
+            ->fetch();
 
         if ($row) {
             $userGroup = GeneralUtility::makeInstance($this->className);
@@ -108,12 +108,11 @@ abstract class AbstractUserGroupRepository
     /**
      * Returns the database connection.
      *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     * @return \TYPO3\CMS\Core\Database\Query\QueryBuilder
      */
     protected static function getQueryBuilder()
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_igldapssoauth_config');
         return $queryBuilder;
     }
-
 }
