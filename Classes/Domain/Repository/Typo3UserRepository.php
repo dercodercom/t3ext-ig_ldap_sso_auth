@@ -426,7 +426,7 @@ class Typo3UserRepository
         if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('saltedpasswords')) {
             $instance = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(null, TYPO3_MODE);
         }
-        $password = Random::generateRandomBytes(16);
+        $password = static::getRandom()->generateRandomBytes(16);
         $password = $instance ? $instance->getHashedPassword($password) : md5($password);
         return $password;
     }
@@ -453,4 +453,8 @@ class Typo3UserRepository
         return $databaseConnection;
     }
 
+    protected static function getRandom(): Random
+    {
+        return GeneralUtility::makeInstance(Random::class);
+    }
 }
