@@ -18,6 +18,7 @@ namespace Causal\IgLdapSsoAuth\Domain\Repository;
 use Causal\IgLdapSsoAuth\Exception\InvalidUserTableException;
 use Causal\IgLdapSsoAuth\Library\Configuration;
 use Causal\IgLdapSsoAuth\Utility\NotificationUtility;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -421,13 +422,10 @@ class Typo3UserRepository
      */
     public static function setRandomPassword()
     {
-        /** @var \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface $instance */
         $instance = null;
-        if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('saltedpasswords')) {
-            $instance = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(null, TYPO3_MODE);
-        }
+        $instance = GeneralUtility::makeInstance(PasswordHashFactory::class)->getDefaultHashInstance('FE');
         $password = static::getRandom()->generateRandomBytes(16);
-        $password = $instance ? $instance->getHashedPassword($password) : md5($password);
+        $password = $instance->getHashedPassword($password);
         return $password;
     }
 
