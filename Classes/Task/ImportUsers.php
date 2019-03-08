@@ -166,7 +166,6 @@ class ImportUsers extends \TYPO3\CMS\Scheduler\Task\AbstractTask
                     // Proceed with import (handle partial result sets until every LDAP record has been returned)
                     do {
                         $typo3Users = $importUtility->fetchTypo3Users($ldapUsers);
-
                         // Loop on all users and import them
                         foreach ($ldapUsers as $index => $aUser) {
                             if ($mode === 'sync' && empty($typo3Users[$index]['uid'])) {
@@ -176,7 +175,6 @@ class ImportUsers extends \TYPO3\CMS\Scheduler\Task\AbstractTask
 
                             // Merge LDAP and TYPO3 information
                             $user = Authentication::merge($aUser, $typo3Users[$index], $config['users']['mapping']);
-
                             // Import the user using information from LDAP
                             $importUtility->import($user, $aUser, $this->restoredUsersHandling);
                         }

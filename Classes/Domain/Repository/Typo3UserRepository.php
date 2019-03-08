@@ -18,9 +18,11 @@ namespace Causal\IgLdapSsoAuth\Domain\Repository;
 use Causal\IgLdapSsoAuth\Exception\InvalidUserTableException;
 use Causal\IgLdapSsoAuth\Library\Configuration;
 use Causal\IgLdapSsoAuth\Utility\NotificationUtility;
+use Solarium\Component\Debug;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -99,9 +101,9 @@ class Typo3UserRepository
 
         $users = [];
         $queryBuilder = static::getQueryBuilder();
-
+        $queryBuilder->getRestrictions()->removeAll();
         if ($uid) {
-            // Search with uid
+           // Search with uid
             $users = $queryBuilder
                 ->select('*')
                 ->from($table)
@@ -119,6 +121,8 @@ class Typo3UserRepository
                 'tx_igldapssoauth_dn',
                 $queryBuilder->createNamedParameter($dn)
             );
+
+
             if (!empty($username)) {
                 // This additional condition will automatically add the mapping between
                 // a local user unrelated to LDAP and a corresponding LDAP user
@@ -132,6 +136,7 @@ class Typo3UserRepository
             } else {
                 $where[] = $dnCheck;
             }
+
             if ($pid) {
                 $where[] = $queryBuilder->expr()->eq('pid', (int)$pid);
             }
@@ -143,6 +148,8 @@ class Typo3UserRepository
                 ->orderBy('deleted', 'ASC')
                 ->execute()
                 ->fetchAll();
+
+
         } elseif (!empty($username)) {
             // Search with username and pid
             $where = [];

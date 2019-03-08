@@ -181,7 +181,6 @@ class UserImportUtility
      */
     public function fetchTypo3Users($ldapUsers)
     {
-
         // Populate an array of TYPO3 users records corresponding to the LDAP users
         // If a given LDAP user has no associated user in TYPO3, a fresh record
         // will be created so that $ldapUsers[i] <=> $typo3Users[i]
@@ -192,6 +191,7 @@ class UserImportUtility
             $this->userTable,
             $typo3UserPid
         );
+
         return $typo3Users;
     }
 
@@ -217,7 +217,6 @@ class UserImportUtility
             // Required LDAP groups are missing: quit!
             return $user;
         }
-
         if (empty($user['uid'])) {
             // Set other necessary information for a new user
             // First make sure to be acting in the right context

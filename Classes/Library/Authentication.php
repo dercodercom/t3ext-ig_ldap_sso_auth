@@ -597,10 +597,12 @@ class Authentication
         $typo3Users = [];
 
         foreach ($ldapUsers as $ldapUser) {
+
             $username = null;
             if (isset($mapping['username']) && preg_match("`<([^$]*)>`", $mapping['username'])) {
                 $username = static::replaceLdapMarkers($mapping['username'], $ldapUser);
             }
+
             $existingTypo3Users = Typo3UserRepository::fetch($table, 0, $pid, $username, $ldapUser['dn']);
 
             if (count($existingTypo3Users) > 0) {
